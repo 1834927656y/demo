@@ -1,0 +1,89 @@
+<template>
+    <tiny-collapse class="demo-collapse-wrap" v-model="activeName" >
+
+      <tiny-collapse-item title="用户中心" name="1">
+        <router-link to="/admin"><div class="menu_label" tabindex="1" >管理员</div></router-link>
+        <div class="menu_label" tabindex="1">销售员</div>
+      </tiny-collapse-item>
+      <tiny-collapse-item title="库存管理" name="2">
+        <div class="menu_label" tabindex="1">入库记录</div>
+        <div class="menu_label" tabindex="1">出库记录</div>
+        <div class="menu_label" tabindex="1">总库存</div>
+      </tiny-collapse-item>
+      <tiny-collapse-item title="销售管理" name="3">
+        <div class="menu_label" tabindex="1">上架记录</div>
+        <div class="menu_label" tabindex="1">下架记录</div>
+        <div class="menu_label" tabindex="1">销售管理</div>
+      </tiny-collapse-item>
+      <tiny-collapse-item title="会员管理" name="4" disabled>
+
+      </tiny-collapse-item>
+      <tiny-collapse-item title="销量分析" name="5">
+        <div class="menu_label" tabindex="1">热销商品</div>
+        <div class="menu_label" tabindex="1">滞销商品</div>
+      </tiny-collapse-item>
+      <div class="time">年月日</div>
+    </tiny-collapse>
+
+  </template>
+
+<script>
+import { ref } from 'vue'
+import { Collapse as TinyCollapse, CollapseItem as TinyCollapseItem, Modal, ColorPicker } from '@opentiny/vue'
+const activeName = ref('1')
+export default ({
+  methods: {
+    handlelick () {
+      console.log('点击')
+    }
+  }
+})
+</script>
+
+  <style scoped lang="less">
+  .demo-collapse-wrap {
+    .tiny-collapse-item__content > * {
+      line-height: 1.8;
+    }
+  }
+  .tiny-collapse{
+    height: 100vh;
+    top: 80px;
+   position: fixed;
+  }
+  .time{
+    position: absolute;
+    bottom: 90px;
+  }
+  div{
+    text-align: center;
+    // display:inline-block;
+  }
+
+  .menu_label {
+      // float: left;
+      border: 1px rgb(67, 150, 202) solid;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-bottom: 3px;
+      padding-top: 1px;
+      border-radius: 15px;
+      font-size: 10px;
+      margin-left: 15px;
+      margin-top: 8px;
+      color: rgb(67, 150, 202);
+      /* font-weight: bold; */
+      margin-bottom: 7px;
+    }
+    .menu_label:active {
+      background-color: rgb(67, 150, 202);
+      color: white;
+    }
+    .menu_label:focus {
+      background-color: rgb(67, 150, 202);
+      color: white;
+    }
+    // .tiny-collapse {
+    //   background-color: black;
+    // }
+  </style>
