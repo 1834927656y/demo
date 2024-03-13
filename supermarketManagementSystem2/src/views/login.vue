@@ -7,13 +7,13 @@
                     <h2>login</h2>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="text" required>
+                        <input type="text" required v-model="username">
                         <!-- required -->
                         <label for="">账号</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" required>
+                        <input type="password" required v-model="password">
                         <label for="">密码</label>
                     </div>
                     <div class="forget">
@@ -38,7 +38,8 @@ export default {
   name: 'loginViews',
   data () {
     return {
-
+      username: '',
+      password: ''
     }
   },
 
@@ -47,18 +48,22 @@ export default {
       axios({
         url: 'http://127.0.0.1:8088/admin/login',
         method: 'get',
-        params: { username: 'ylh', password: '123456' }
+        params: { username: this.username, password: this.password }
       }).then((result) => {
-        console.log(result.data.success)
+        console.log(result)
+        if (result.data.success && result.data.data.status === 0) {
+          this.$router.push({
+            name: 'home',
+            query: {
+              ParameterName: 'home'
+            }
+          })
+        } else if (result.data.success && result.data.data.status === 1) {
+          console.log('user')
+        } else if (result.data.success === false) {
+          return alert(result.data.msg)
+        }
       })
-      if (false) {
-        this.$router.push({
-          name: 'home',
-          query: {
-            ParameterName: 'home'
-          }
-        })
-      }
     }
   }
 

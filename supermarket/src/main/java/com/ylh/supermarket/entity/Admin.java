@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
-
 /**
  * 
  * @TableName admin
@@ -19,7 +18,7 @@ public class Admin implements Serializable {
     /**
      * 
      */
-    @TableId(type = IdType.AUTO)
+    @TableId
     private Integer id;
 
     /**
@@ -35,7 +34,7 @@ public class Admin implements Serializable {
     /**
      * 
      */
-    private Date time;
+    private String time;
 
     /**
      * 

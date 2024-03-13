@@ -10,19 +10,19 @@ import com.ylh.supermarket.entity.Admin;
 import com.ylh.supermarket.service.AdminService;
 import com.ylh.supermarket.mapper.AdminMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Objects;
 
 /**
 * @author yi
 * @description 针对表【admin】的数据库操作Service实现
-* @createDate 2024-03-12 14:48:00
+* @createDate 2024-03-13 10:34:17
 */
-
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
     implements AdminService{
+
+    @Override
     public R login(Admin admin) {
         //select * from admin where username = ?
         QueryWrapper<Admin> query = Wrappers.query(Admin.class);

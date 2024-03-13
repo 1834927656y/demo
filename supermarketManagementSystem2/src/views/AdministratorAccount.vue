@@ -1,6 +1,8 @@
 <template>
 
-    <DataEntry></DataEntry>
+    <DataEntry>
+
+    </DataEntry>
 
 </template>
 

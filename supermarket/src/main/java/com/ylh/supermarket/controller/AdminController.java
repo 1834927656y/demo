@@ -2,6 +2,8 @@ package com.ylh.supermarket.controller;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ylh.supermarket.dto.R;
 import com.ylh.supermarket.entity.Admin;
 import com.ylh.supermarket.service.AdminService;
@@ -9,8 +11,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
-@CrossOrigin()
+
+import static com.baomidou.mybatisplus.extension.toolkit.Db.list;
+
+@CrossOrigin
 @Tag(name="管理员接口",description = "管理员相关接口:增删改查")
 @RestController
 public class AdminController {
@@ -42,12 +48,20 @@ public class AdminController {
         return b ? R.ok().setMsg("修改成功").setData(admin) : R.fail().setMsg("修改失败");
     }
 
-    @DeleteMapping("/admin/del/{id}")
-    public R delById(@PathVariable("id") Integer id){
+    @DeleteMapping("/admin/del")
+    public R delById(Integer id){
+        System.out.print(id);
         Admin admin = adminService.getById(id);
         if(Objects.isNull(admin)){
             return R.fail().setMsg("该管理员不存在");
         }
         return adminService.removeById(id) ? R.ok().setMsg("删除成功") : R.fail().setMsg("删除失败");
+    }
+
+    @GetMapping("/admin/queryAll")
+    public List<Admin> queryAll(){
+        QueryWrapper<Admin> query = Wrappers.query(Admin.class);
+        List<Admin> admins = list(query);
+        return admins;
     }
 }
