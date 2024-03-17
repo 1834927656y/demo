@@ -31,9 +31,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
         if (Objects.isNull(one)){
             return R.fail().setMsg("账号不存在");
         }
-        if(one.getStatus() != 0){
-            return R.fail().setMsg("账号禁用").setCode(1);
-        }
+//        if(one.getStatus() != 0){
+//            return R.fail().setMsg("账号禁用").setCode(1);
+//        }
         String pwd = SecureUtil.md5(admin.getPassword()+one.getSalt());
         if(Objects.equals(one.getPassword(),pwd)){
             return  R.ok().setMsg("登录成功").setData(one);

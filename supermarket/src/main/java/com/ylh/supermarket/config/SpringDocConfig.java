@@ -14,8 +14,8 @@ public class SpringDocConfig {
     public OpenAPI apiInfo() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("软帝云音乐后端接口文档")
-                        .description("本文档主要涵盖：音乐资源、专辑、歌手、歌单、用户与管理员账户管理等功能接口API说明")
+                        .title("超市管理系统后端接口文档")
+                        .description("本文档主要涵盖：商品，用户与管理员账户管理等功能接口API说明")
                         .version("v1.0.0")
                         .license(new License().name("开源文档协议"))
                         .contact(new Contact().name("ylh").url("www.baidu.com").email("****@qq.com"))

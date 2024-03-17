@@ -1,9 +1,11 @@
 <template>
     <div class="hat">
+      <img src="@/assets/logo.png" class="logo">
+      <div class="text">{{id}}</div>
         <div class="icon-demo">
             <tiny-icon-Administrator></tiny-icon-Administrator>
         </div>
-        <div class="user">{{user}}</div>
+        <div class="user">{{name}}</div>
         <div class="quit" @mouseover="handleMouseOver" @mouseleave="handleMouseLeave" @click="handleClick" :style="{ color: quitFontColor }">退出登录</div>
 
     </div>
@@ -19,7 +21,6 @@ import { ref } from 'vue'
 import { defineComponent } from '@vue/composition-api'
 const TinyIconAdministrator = IconAdministrator()
 
-const user = 'admin'
 const quitFontColor = ref('#000')
 const handleMouseOver = () => {
   quitFontColor.value = '#40a9ff'
@@ -29,6 +30,14 @@ const handleMouseLeave = () => {
 }
 
 export default defineComponent({
+  data () {
+    return {
+      name: this.$route.query.name,
+      id: this.$route.query.id
+
+    }
+  },
+
   methods: {
     handleClick () {
       console.log('用户已退出登录')
@@ -41,18 +50,30 @@ export default defineComponent({
     }
 
   }
+
 })
 </script>
 
   <style scoped>
+  .logo{
+    width: 4%;
+    height: 100%;
+  }
+  .text{
+    position: relative;
+    left: 80px;
+    top: -50px;
+  }
   .icon-demo .tiny-svg {
     position: absolute;
     fill: #8994aa;
-
     vertical-align: middle;
     font-size: 48px;
-    top: 10px;
-    left: 0;
+    top: -90px;
+  }
+  .icon-demo{
+    position: absolute;
+    right: 190px;
   }
   .hat{
     width: 100vw;
@@ -63,8 +84,8 @@ export default defineComponent({
   }
   .user{
     position: absolute;
-    left: 60px;
-    top: 26px;
+    right: 120px;
+    top: 20px;
   }
   .quit{
     position: absolute;

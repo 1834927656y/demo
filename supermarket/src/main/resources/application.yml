@@ -4,6 +4,12 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/supermarker
     username: root
     password: 123456
+  mvc:
+    static-path-pattern: /**
+  web:
+    resources:
+      static-locations: classpath:/
+
 
 # springdoc-openapi项目配置
 springdoc:

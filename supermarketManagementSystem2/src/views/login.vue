@@ -55,8 +55,11 @@ export default {
           this.$router.push({
             name: 'home',
             query: {
-              ParameterName: 'home'
+              ParameterName: 'home',
+              name: result.data.data.username,
+              id: '管理员'
             }
+
           })
         } else if (result.data.success && result.data.data.status === 1) {
           console.log('user')

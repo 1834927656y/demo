@@ -1,12 +1,13 @@
 <template>
     <tiny-collapse class="demo-collapse-wrap" v-model="activeName" >
-
+      <tiny-collapse-item title="首页" name="5" disabled>
+      </tiny-collapse-item>
       <tiny-collapse-item title="用户中心" name="1">
         <router-link to="/admin"><div class="menu_label" tabindex="1" >管理员</div></router-link>
-        <div class="menu_label" tabindex="1">销售员</div>
+        <router-link to="/user"><div class="menu_label" tabindex="1">销售员</div></router-link>
       </tiny-collapse-item>
       <tiny-collapse-item title="库存管理" name="2">
-        <div class="menu_label" tabindex="1">入库记录</div>
+        <router-link to="/SEEntry"><div class="menu_label" tabindex="1">入库记录</div></router-link>
         <div class="menu_label" tabindex="1">出库记录</div>
         <div class="menu_label" tabindex="1">总库存</div>
       </tiny-collapse-item>
@@ -16,13 +17,9 @@
         <div class="menu_label" tabindex="1">销售管理</div>
       </tiny-collapse-item>
       <tiny-collapse-item title="会员管理" name="4" disabled>
+      </tiny-collapse-item>
 
-      </tiny-collapse-item>
-      <tiny-collapse-item title="销量分析" name="5">
-        <div class="menu_label" tabindex="1">热销商品</div>
-        <div class="menu_label" tabindex="1">滞销商品</div>
-      </tiny-collapse-item>
-      <div class="time">年月日</div>
+      <div class="time">{{time}}</div>
     </tiny-collapse>
 
   </template>
@@ -31,11 +28,22 @@
 import { ref } from 'vue'
 import { Collapse as TinyCollapse, CollapseItem as TinyCollapseItem, Modal, ColorPicker } from '@opentiny/vue'
 const activeName = ref('1')
+
 export default ({
+  data () {
+    return {
+      time: ''
+    }
+  },
   methods: {
     handlelick () {
       console.log('点击')
     }
+  },
+  created () {
+    // this.timer = setInterval(() => {
+    //   this.time = new Date().toLocaleString()
+    // }, 1000) // 每秒执行一次
   }
 })
 </script>
