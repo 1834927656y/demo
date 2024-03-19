@@ -23,6 +23,7 @@
           <td>价格</td>
           <td>录入时间</td>
           <td>图片</td>
+          <th >操作</th>
 
         </tr>
         <tr v-for="(data, index) in dataset" :key="index">
@@ -33,9 +34,9 @@
           <td>{{ data.price }}</td>
           <td>{{ data.time }}</td>
           <td><img :src="data.img" class="produceImg"></td>
-          <td>
-            <!-- 这里可以添加操作按钮 -->
-          </td>
+
+        <td><button class="deleteButton" @click="handleDelete(index)">删除</button></td>
+
         </tr>
       </table>
 
@@ -43,10 +44,10 @@
 
         <form action="" class="hidden">
           <legend>修改内容</legend>
-          账户：<input type="text" v-model="changeData.username"><br>
-          密码：<input type="text" v-model="changeData.password"><br>
-          性别：<input type="text" v-model="changeData.gender"><br>
-          姓名：<input type="text" v-model="changeData.name"><br>
+          名称：<input type="text" v-model="changeData.username"><br>
+          数量：<input type="text" v-model="changeData.password"><br>
+          保质期：<input type="text" v-model="changeData.gender"><br>
+          价格：<input type="text" v-model="changeData.name"><br>
           <button @click="close" class="close">关闭</button>
           <button class="changeButton" @click="change">修改</button>
 
@@ -86,15 +87,14 @@ export default {
   },
   // 获取前端存储数据
   created () {
-    // axios({
-    //   url: 'http://127.0.0.1:8088/pustorage/queryAll',
-    //   method: 'get'
-    // }).then((result) => {
-    //   for (let i = 0; i < result.data.length; i++) {
-    //     this.dataset.push(result.data[i])
-    //   }
-    // })
-    this.dataset = JSON.parse(localStorage.getItem('dataset'))
+    axios({
+      url: 'http://127.0.0.1:8088/pustorage/queryAll',
+      method: 'get'
+    }).then((result) => {
+      for (let i = 0; i < result.data.length; i++) {
+        this.dataset.push(result.data[i])
+      }
+    })
   },
   methods: {
     handleFileChange (event) {
@@ -136,10 +136,15 @@ export default {
             }).then((result) => {
               alert(result.data.msg)
               if (result.data.msg === '添加成功') {
-                this.dataset.push(newData)
-                const datasetString = JSON.stringify(this.dataset)
-                localStorage.setItem('dataset', datasetString)
-                console.log(this.dataset[0].img + '数组添加成功')
+                this.dataset = []
+                axios({
+                  url: 'http://127.0.0.1:8088/pustorage/queryAll',
+                  method: 'get'
+                }).then((result) => {
+                  for (let i = 0; i < result.data.length; i++) {
+                    this.dataset.push(result.data[i])
+                  }
+                })
               }
             })
             this.formData = {
@@ -161,7 +166,7 @@ export default {
       if (confirm('确定删除')) {
         console.log(this.dataset[index].id)
         axios({
-          url: 'http://127.0.0.1:8088/admin/del',
+          url: 'http://127.0.0.1:8088/pustorage/del',
           method: 'delete',
           params: { id: this.dataset[index].id }
         }).then((result) => {

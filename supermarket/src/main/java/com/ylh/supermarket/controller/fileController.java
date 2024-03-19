@@ -1,6 +1,7 @@
 package com.ylh.supermarket.controller;
 
 import com.ylh.supermarket.dto.R;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ public class fileController {
     /**
      * 上传图片
      */
+    @Operation(summary = "上传文件并返回存储地址")
     @PostMapping("/api/uploadImage")
     public String uploadImage(@RequestParam("image") MultipartFile image, HttpServletRequest request){
         System.out.println("上传图片");

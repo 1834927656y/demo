@@ -8,6 +8,7 @@ import Hat from './components/Hat.vue'
 import DataEntry from './components/DataEntry.vue'
 import UserDataEntry from './components/UserDataEntry.vue'
 import SEEntry from './components/SEEntry.vue'
+import reEntry from './components/reEntry.vue'
 
 Vue.config.productionTip = false
 Vue.use(TinyVue)
@@ -16,6 +17,7 @@ Vue.component('Hat', Hat)
 Vue.component('DataEntry', DataEntry)
 Vue.component('UserDataEntry', UserDataEntry)
 Vue.component('SEEntry', SEEntry)
+Vue.component('reEntry', reEntry)
 
 new Vue({
   router,

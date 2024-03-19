@@ -8,13 +8,12 @@
       </tiny-collapse-item>
       <tiny-collapse-item title="库存管理" name="2">
         <router-link to="/SEEntry"><div class="menu_label" tabindex="1">入库记录</div></router-link>
-        <div class="menu_label" tabindex="1">出库记录</div>
-        <div class="menu_label" tabindex="1">总库存</div>
+        <router-link to="/reduceEntry"><div class="menu_label" tabindex="1">出库记录</div></router-link>
+        <router-link to="/Entry"><div class="menu_label" tabindex="1">总库存</div></router-link>
       </tiny-collapse-item>
       <tiny-collapse-item title="销售管理" name="3">
-        <div class="menu_label" tabindex="1">上架记录</div>
-        <div class="menu_label" tabindex="1">下架记录</div>
-        <div class="menu_label" tabindex="1">销售管理</div>
+       <router-link to="/Market"> <div class="menu_label" tabindex="1">销售记录</div></router-link>
+        <router-link to="/sales"><div class="menu_label" tabindex="1">退货记录</div></router-link>
       </tiny-collapse-item>
       <tiny-collapse-item title="会员管理" name="4" disabled>
       </tiny-collapse-item>

@@ -12,4 +12,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PutstorageService extends IService<Putstorage> {
     R add(Putstorage putstorage);
+
+    R del(Putstorage putstorage);
 }

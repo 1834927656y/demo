@@ -2,40 +2,34 @@
     <div class="entry">
       <form action="" name="01" class="entryForm">
         <fieldset>
-          <legend>入库</legend>
+          <legend>退货</legend>
+          订单id: <input type="text" v-model="formData.id">
           名称：<input type="text" v-model="formData.name">
           数量：<input type="text" v-model="formData.sage">
-          保质期：<input type="text" v-model="formData.saveTime">
+          支付方式：<input type="text" >
+          <!-- 保质期：<input type="text" v-model="formData.saveTime">
           价格：<input type="text" v-model="formData.price">
-          <input type="file" ref="fileInput" @change="handleFileChange" value="选择图片">
+          <input type="file" ref="fileInput" @change="handleFileChange" value="选择图片"> -->
           <input type="button" value="添加" @click="dj"/>
 
         </fieldset>
       </form>
       <div class="dataTotal">共有数据{{dataset.length}}条</div>
       <table border="1" width="80%" class="bg" autocapitalize="option"  style="margin: auto;">
-        <caption>入库记录</caption>
+        <caption>退货记录</caption>
         <tr style="background-color: skyblue;">
           <td>序号</td>
           <td>名称</td>
           <td>数量</td>
-          <td>保质期</td>
           <td>价格</td>
-          <td>录入时间</td>
-          <td>图片</td>
 
         </tr>
         <tr v-for="(data, index) in dataset" :key="index">
           <td>{{ index + 1 }}</td>
           <td>{{ data.name }}</td>
           <td>{{ data.sage }}</td>
-          <td>{{ data.savetime }}</td>
-          <td>{{ data.price }}</td>
-          <td>{{ data.time }}</td>
-          <td><img :src="data.img" class="produceImg"></td>
-          <td>
-            <!-- 这里可以添加操作按钮 -->
-          </td>
+          <td>{{ data.money }}</td>
+
         </tr>
       </table>
 
@@ -43,10 +37,11 @@
 
         <form action="" class="hidden">
           <legend>修改内容</legend>
-          账户：<input type="text" v-model="changeData.username"><br>
-          密码：<input type="text" v-model="changeData.password"><br>
-          性别：<input type="text" v-model="changeData.gender"><br>
-          姓名：<input type="text" v-model="changeData.name"><br>
+
+          名称：<input type="text" v-model="changeData.username"><br>
+          数量：<input type="text" v-model="changeData.password"><br>
+          保质期：<input type="text" v-model="changeData.gender"><br>
+          价格：<input type="text" v-model="changeData.name"><br>
           <button @click="close" class="close">关闭</button>
           <button class="changeButton" @click="change">修改</button>
 
@@ -64,12 +59,10 @@ export default {
     return {
       dataset: [],
       formData: {
+        id: 0,
         name: '',
-        saveTime: '',
-        sage: '',
-        price: '',
-        imgData: '',
-        time: ''
+        sage: 1,
+        type: 0
       },
       changeData: {
         name: '',
@@ -86,15 +79,17 @@ export default {
   },
   // 获取前端存储数据
   created () {
-    // axios({
-    //   url: 'http://127.0.0.1:8088/pustorage/queryAll',
-    //   method: 'get'
-    // }).then((result) => {
-    //   for (let i = 0; i < result.data.length; i++) {
-    //     this.dataset.push(result.data[i])
-    //   }
-    // })
-    this.dataset = JSON.parse(localStorage.getItem('dataset'))
+    axios({
+      url: 'http://127.0.0.1:8088/money/queryAll',
+      method: 'get'
+    }).then((result) => {
+      console.log(result)
+      for (let i = 0; i < result.data.length; i++) {
+        if (result.data[i].type === 1) {
+          this.dataset.push(result.data[i])
+        }
+      }
+    })
   },
   methods: {
     handleFileChange (event) {
@@ -103,65 +98,48 @@ export default {
       console.log(this.imgSrc)
     },
     dj () {
-      axios({
-        url: 'http://127.0.0.1:8088/api/uploadImage',
-        method: 'post',
-        data: this.imgSrc,
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      if (this.formData.name && this.formData.sage) {
+        const newData = {
+          id: this.formData.id,
+          money: 0,
+          name: this.formData.name,
+          sage: this.formData.sage,
+          type: this.formData.type
         }
-      }).then((result) => {
-        const imageUrl = result.data // URL.createObjectURL(new Blob ([result.data]))
-        console.log(imageUrl)
-        if (result !== '文件上传失败') {
-          if (this.formData.name && this.formData.sage && this.formData.saveTime && this.formData.price) {
-            const newData = {
-              id: 0,
-              name: this.formData.name,
-              savetime: this.formData.saveTime,
-              sage: this.formData.sage,
-              img: imageUrl,
-              price: this.formData.price,
-              time: new Date().toLocaleString()
-            }
-            const admin = JSON.stringify(newData, null, 4)
-            // 这里可以将数据提交到后端或者做其他处理
-            axios({
-              url: 'http://127.0.0.1:8088/pustorage/reg',
-              method: 'post',
-              data: admin,
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            }).then((result) => {
-              alert(result.data.msg)
-              if (result.data.msg === '添加成功') {
-                this.dataset.push(newData)
-                const datasetString = JSON.stringify(this.dataset)
-                localStorage.setItem('dataset', datasetString)
-                console.log(this.dataset[0].img + '数组添加成功')
-              }
-            })
-            this.formData = {
-              name: '',
-              saveTime: '',
-              sage: '',
-              price: '',
-              imgData: '',
-              time: ''
-            }
-            this.imgSrc = new FormData()
-          } else {
-            return alert('输入内容不能为空')
+        const admin = JSON.stringify(newData, null, 4)
+        // 这里可以将数据提交到后端或者做其他处理
+        console.log(admin)
+        axios({
+          url: 'http://127.0.0.1:8088/money/del',
+          method: 'post',
+          data: admin,
+          headers: {
+            'Content-Type': 'application/json'
           }
+
+        }).then((result) => {
+          alert(result.data.msg)
+          if (result.data.msg === '退货成功') {
+            console.log(result)
+            this.dataset.push(result.data.data)
+            console.log(this.dataset[0].img + '数组添加成功')
+          }
+        })
+        this.formData = {
+          name: '',
+          sage: '',
+          type: 0
+
         }
-      })
+      } else {
+        return alert('输入内容不能为空')
+      }
     },
     handleDelete (index) {
       if (confirm('确定删除')) {
         console.log(this.dataset[index].id)
         axios({
-          url: 'http://127.0.0.1:8088/admin/del',
+          url: 'http://127.0.0.1:8088/pustorage/del',
           method: 'delete',
           params: { id: this.dataset[index].id }
         }).then((result) => {

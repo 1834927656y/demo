@@ -2,7 +2,7 @@
     <div class="entry">
       <form action="" name="01" class="entryForm">
         <fieldset>
-          <legend>入库</legend>
+          <legend>出库</legend>
           名称：<input type="text" v-model="formData.name">
           数量：<input type="text" v-model="formData.sage">
           保质期：<input type="text" v-model="formData.saveTime">
@@ -14,7 +14,7 @@
       </form>
       <div class="dataTotal">共有数据{{dataset.length}}条</div>
       <table border="1" width="80%" class="bg" autocapitalize="option"  style="margin: auto;">
-        <caption>入库记录</caption>
+        <caption>出库记录</caption>
         <tr style="background-color: skyblue;">
           <td>序号</td>
           <td>名称</td>
@@ -94,7 +94,7 @@ export default {
     //     this.dataset.push(result.data[i])
     //   }
     // })
-    this.dataset = JSON.parse(localStorage.getItem('dataset'))
+    this.dataset = JSON.parse(localStorage.getItem('datasetDel'))
   },
   methods: {
     handleFileChange (event) {
@@ -127,7 +127,7 @@ export default {
             const admin = JSON.stringify(newData, null, 4)
             // 这里可以将数据提交到后端或者做其他处理
             axios({
-              url: 'http://127.0.0.1:8088/pustorage/reg',
+              url: 'http://127.0.0.1:8088/pustorage/de',
               method: 'post',
               data: admin,
               headers: {
@@ -138,7 +138,7 @@ export default {
               if (result.data.msg === '添加成功') {
                 this.dataset.push(newData)
                 const datasetString = JSON.stringify(this.dataset)
-                localStorage.setItem('dataset', datasetString)
+                localStorage.setItem('datasetDel', datasetString)
                 console.log(this.dataset[0].img + '数组添加成功')
               }
             })
@@ -150,7 +150,6 @@ export default {
               imgData: '',
               time: ''
             }
-            this.imgSrc = new FormData()
           } else {
             return alert('输入内容不能为空')
           }

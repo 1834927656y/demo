@@ -1,7 +1,5 @@
 package com.ylh.supermarket.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,10 +26,22 @@ public class PutstorageServiceImpl extends ServiceImpl<PutstorageMapper, Putstor
         query.eq("name",putstorage.getName());
         Putstorage one = getOne(query);
         if (Objects.nonNull(one)){
-            int newSage = one.getSage() + putstorage.getSage();
-            one.setSage(newSage);
-            update(one,query);
-            return R.ok().setMsg("添加成功").setData(putstorage);
+//            if(!one.getSavetime().equals(putstorage.getSavetime()) ){
+//                System.out.println(one.getSavetime());
+//                System.out.println(putstorage.getSavetime());
+//                save(putstorage);
+//                return R.ok().setMsg("添加成功").setData(putstorage);
+//            }
+//            else {
+                int newSage = one.getSage() + putstorage.getSage();
+                one.setSage(newSage);
+                one.setSavetime(putstorage.getSavetime());
+                one.setImg(putstorage.getImg());
+                one.setPrice(putstorage.getPrice());
+                one.setTime(putstorage.getTime());
+                update(one,query);
+                return R.ok().setMsg("添加成功").setData(putstorage);
+//            }
         }
         else {
             if (save(putstorage)){
@@ -40,6 +50,29 @@ public class PutstorageServiceImpl extends ServiceImpl<PutstorageMapper, Putstor
             return R.fail().setMsg("添加失败");
         }
 
+    }
+    @Override
+    public R del(Putstorage putstorage){
+        QueryWrapper<Putstorage> query = Wrappers.query(Putstorage.class);
+        query.eq("name",putstorage.getName());
+        Putstorage one = getOne(query);
+        if (Objects.nonNull(one)){
+            int newSage = one.getSage() - putstorage.getSage();
+            if( newSage >0 ){
+                one.setSage(newSage);
+                one.setSavetime(putstorage.getSavetime());
+                one.setImg(putstorage.getImg());
+                one.setPrice(putstorage.getPrice());
+                one.setTime(putstorage.getTime());
+                update(one,query);
+                return R.ok().setMsg("添加成功").setData(putstorage);
+            }
+            else {
+                return R.fail().setMsg("库存不足").setData(putstorage);
+            }
+
+        }
+        return R.fail().setMsg("商品不存在");
     }
 }
 
